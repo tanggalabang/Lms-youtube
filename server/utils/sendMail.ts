@@ -11,6 +11,9 @@ interface EmailOptions {
 }
 
 const sendEmail = async (options: EmailOptions): Promise<void> => {
+  if (!options.email) {
+    throw new Error("No recipients defined makan");
+  }
   const transporter: Transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || "587"),

@@ -1,0 +1,66 @@
+Arguments: 
+  /snap/node/7823/bin/node /snap/node/7823/bin/yarn.js
+
+PATH: 
+  /home/mrtricky/.console-ninja/.bin:/home/mrtricky/.console-ninja/.bin:/home/mrtricky/.console-ninja/.bin:/home/mrtricky/.console-ninja/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/snap/bin:/snap/bin/cache/dart-sdk/bin:/home/mrtricky/.pub-cache/bin:/snap/bin:/snap/bin/cache/dart-sdk/bin:/home/mrtricky/.pub-cache/bin:/snap/bin:/snap/bin/cache/dart-sdk/bin:/home/mrtricky/.pub-cache/bin:/snap/bin:/snap/bin/cache/dart-sdk/bin:/home/mrtricky/.pub-cache/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.18.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/mrtricky/project/Lms-youtube/server/package.json: Unexpected token / in JSON at position 615
+      at JSON.parse (<anonymous>)
+      at /snap/node/7823/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/snap/node/7823/lib/cli.js:310:30)
+      at /snap/node/7823/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "dev": "ts-node-dev --respawn --transpile-only server.ts"
+    },
+    "author": "tesar rahmat maulana",
+    "license": "ISC",
+    "dependencies": {
+      "@types/bcryptjs": "^2.4.2",
+      "@types/cookie-parser": "^1.4.3",
+      "@types/cors": "^2.8.13",
+      "@types/express": "^4.17.17",
+      "@types/jsonwebtoken": "^9.0.2",
+      "@types/node": "^20.4.0",
+      "bcryptjs": "^2.4.3",
+      "cookie-parser": "^1.4.6",
+      "cors": "^2.8.5",
+      "dotenv": "^16.3.1",
+      // "ejs": "^3.1.9",
+      "express": "^4.18.2",
+      "ioredis": "^5.3.2",
+      "jsonwebtoken": "^9.0.1",
+      "mongoose": "^7.3.1",
+      // "nodemailer": "^6.9.5",
+      "ts-node-dev": "^2.0.0",
+      "typescript": "^5.1.6"
+    },
+    "devDependencies": {
+      "@types/ejs": "^3.1.2",
+      "@types/nodemailer": "^6.4.10"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
