@@ -81,7 +81,7 @@ export const getSingleCourse = CatchAsyncError(
         const course = JSON.parse(isCacheExist);
         res.status(200).json({
           success: true,
-          course,
+          course,/*  */
         });
       } else {
         const course = await CourseModel.findById(req.params.id).select(
