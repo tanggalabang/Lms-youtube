@@ -18,13 +18,12 @@ export const authApi = apiSlice.injectEndpoints({
         body: data,
         credentials: "include" as const,
       }),
-
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
           dispatch(
             userRegistration({
-              token: result.data.activationToken,
+              token: result.data.activationToken,//menyimpan token ke state.auth, chek di apiSlice line 15 dan store.ts line 7
             })
           );
         } catch (error: any) {

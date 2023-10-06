@@ -12,11 +12,9 @@ import { useSelector } from "react-redux";
 import Image from "next/image";
 import avatar from "../../public/next.svg";
 import { useSession } from "next-auth/react";
-import {
-  useLogOutQuery,
-  useSocialAuthMutation,
-} from "@/redux/features/auth/authApi";
+import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   open: boolean;
@@ -26,6 +24,8 @@ type Props = {
   setRoute: (route: string) => void;
 };
 
+//========================
+
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -33,7 +33,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const { data } = useSession();
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
   const [logout, setLogout] = useState(false);
-  const {} = useLogOutQuery(undefined, {
+  const {} = useLoadUserQuery(undefined, {
     skip: !logout ? true : false,
   });
 
@@ -72,6 +72,10 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
       setOpenSidebar(false);
     }
   };
+
+  console.log(user);
+  console.log(data);
+  //========================
 
   return (
     <div className="w-full relative">

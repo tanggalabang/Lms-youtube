@@ -13,11 +13,15 @@ type VerifyNumber = {
   "2": string;
   "3": string;
 };
+
+//========================
+
 const Verification: FC<Props> = ({ setRoute }) => {
   const { token } = useSelector((state: any) => state.auth);
   const [activation, { isSuccess, error }] = useActivationMutation();
   const [invalidError, setInvalidError] = useState<boolean>(false);
 
+  // alert
   useEffect(() => {
     if (isSuccess) {
       toast.success("Account activated successfully");
@@ -27,12 +31,13 @@ const Verification: FC<Props> = ({ setRoute }) => {
       if ("data" in error) {
         const errorData = error as any;
         toast.error(errorData.data.message);
-        setInvalidError(true)
+        setInvalidError(true);
       } else {
         console.log("An error occured:", error);
       }
     }
   }, [isSuccess, error]);
+  // !alert
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -47,6 +52,8 @@ const Verification: FC<Props> = ({ setRoute }) => {
     2: "",
     3: "",
   });
+
+  //pengirim data
   const verificationHandler = async () => {
     const verificationNumber = Object.values(verifyNumber).join("");
     if (verificationNumber.length !== 4) {
@@ -58,6 +65,8 @@ const Verification: FC<Props> = ({ setRoute }) => {
       activation_code: verificationNumber,
     });
   };
+  //!pengirim data
+
   const handleInputChange = (index: number, value: string) => {
     setInvalidError(false);
     const newVerifyNumber = { ...verifyNumber, [index]: value };

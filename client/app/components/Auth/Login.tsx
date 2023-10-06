@@ -25,9 +25,13 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password!").min(6),
 });
 
+//=================
+
 const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
   const [login, { isSuccess, error }] = useLoginMutation();
+
+  //pengirim data
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: schema,
@@ -35,7 +39,9 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
       await login({ email, password });
     },
   });
+  //!pengirim data
 
+  //alert
   useEffect(() => {
     if (isSuccess) {
       toast.success("Login Successfully!");
@@ -48,8 +54,11 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
       }
     }
   }, [isSuccess, error]);
+  //!alert
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+
+  //=================
 
   return (
     <div className="w-full">

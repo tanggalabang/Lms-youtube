@@ -2,16 +2,28 @@
 import React, { FC, useState } from "react";
 import SideBarProfile from "./SideBarProfile";
 import ProfileInfo from "./ProfileInfo";
+import ChangePassword from "./ChangePassword";
+import { useLogOutQuery } from "@/redux/features/auth/authApi";
+import { signOut } from "next-auth/react";
 type Props = {
   user: any;
-  // avatar: string |null
+  avatar: string | null;
 };
 
 const Profile: FC<Props> = ({ user }) => {
   const [scroll, setScroll] = useState(false);
   const [avatar, setAvatar] = useState(null);
+  const [logout, setLogout] = useState(false);
+  const {} = useLogOutQuery(undefined, {
+    skip: !logout ? true : false,
+  });
+
   const [active, setActive] = useState(1);
-  const logOutHandler = async () => {};
+
+  const logOutHandler = async () => {
+    setLogout(true);
+    await signOut();
+  };
 
   if (typeof window != "undefined") {
     window.addEventListener("scroll", () => {
@@ -38,11 +50,16 @@ const Profile: FC<Props> = ({ user }) => {
           logOutHandler={logOutHandler}
         />
       </div>
-        {active === 1 && (
-          <div className="w-full h-full bg-transparent mt-[80px]">
-            <ProfileInfo avatar={avatar} user={user} />
-          </div>
-        )}
+      {active === 1 && (
+        <div className="w-full h-full bg-transparent mt-[80px]">
+          <ProfileInfo avatar={avatar} user={user} />
+        </div>
+      )}
+      {active === 2 && (
+        <div className="w-full h-full bg-transparent mt-[80px]">
+          <ChangePassword />
+        </div>
+      )}
     </div>
   );
 };

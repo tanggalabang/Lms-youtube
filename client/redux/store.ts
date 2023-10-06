@@ -6,7 +6,7 @@ import authSlice from "./features/auth/authSlice";
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
-    auth: authSlice,
+    auth: authSlice, // ini ya state authnya
   },
   devTools: false,
   middleware: (getDefaultMiddleware) =>

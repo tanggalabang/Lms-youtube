@@ -1,5 +1,7 @@
 import { styles } from "@/app/styles/style";
-import React, { FC, useState } from "react";
+import { useUpdatePasswordMutation } from "@/redux/features/user/userApi";
+import React, { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type Props = {};
 
@@ -7,7 +9,28 @@ const ChangePassword: FC<Props> = (props) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const passwordChangeHandler = (e: any) => {};
+  const [updatePassword, { isSuccess, error }] = useUpdatePasswordMutation();
+
+  const passwordChangeHandler = async (e: any) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      toast.error("Password do not match");
+    } else {
+      await updatePassword({ oldPassword, newPassword });
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Password changed successfully");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   return (
     <div className="w-full pl-7 px-2 800px: px-5 800px:pl-0">
@@ -32,13 +55,13 @@ const ChangePassword: FC<Props> = (props) => {
               onChange={(e) => setOldPassword(e.target.value)}
             />
           </div>
-          <div className="w-[100%] 800px:w-[60%) mt-2">
-            <label className="block pb-2 text-black dark: text-[#fff]">
+          <div className="w-[100%] 800px:w-[60%] mt-2">
+            <label className="block pb-2 text-black dark:text-[#fff]">
               Enter your new password
-            </label>{" "}
+            </label>
             <input
               type="password"
-              className={`${styles.input} !w-[95%) mb-4 800px:mb-0 text-black dark:text-[#fff]`}
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0 text-black dark:text-[#fff]`}
               required
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
@@ -65,3 +88,5 @@ const ChangePassword: FC<Props> = (props) => {
     </div>
   );
 };
+
+export default ChangePassword;

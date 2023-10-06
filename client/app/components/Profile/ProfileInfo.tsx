@@ -6,7 +6,7 @@ import avatarIcon from "../../../public/next.svg";
 import {
   useEditProfileMutation,
   useUpdateAvatarMutation,
-} from "@/redux/features/api/user/userApi";
+} from "@/redux/features/user/userApi";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import toast from "react-hot-toast";
 type Props = {
@@ -23,6 +23,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
 
   const imageHandler = async (e: any) => {
     const fileReader = new FileReader();
+
     fileReader.onload = () => {
       if (fileReader.readyState === 2) {
         const avatar = fileReader.result;
@@ -41,12 +42,12 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     if (error || updateError) {
       console.log(error);
     }
-    if(success)
-    {
-      toast.success("Profile updated successfully")
+    if (success) {
+      toast.success("Profile updated successfully");
     }
   }, [isSuccess, error, success, updateError]);
 
+  // edit profile
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (name !== "") {
@@ -55,6 +56,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       });
     }
   };
+  // /1edit profile
 
   return (
     <>
@@ -78,7 +80,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
           <label htmlFor="avatar">
             <div className="w-[30px] h-[30px] bg-slate-900 rounded-full absolute bottom-2 right-2 flex items-center justify-center cursor-pointer">
               <AiOutlineCamera size={20} className="z-1" />
-            </div>{" "}
+            </div>
           </label>
         </div>
       </div>

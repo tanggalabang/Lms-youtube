@@ -8,6 +8,7 @@ export const apiSlice = createApi({
   }),
 
   endpoints: (builder) => ({
+
     refreshToken: builder.query({
       query: (data) => ({
         url: "refresh",
@@ -28,8 +29,8 @@ export const apiSlice = createApi({
           const result = await queryFulfilled;
           dispatch(
             userLoggedIn({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
+              accessToken: result.data.accessToken,//ketika direfresh browser akan menyimpan token baru ke state
+              user: result.data.user,// ini juga
             })
           );
         } catch (error: any) {
@@ -37,6 +38,7 @@ export const apiSlice = createApi({
         }
       },
     }),
+
   }),
 });
 export const { useRefreshTokenQuery, useLoadUserQuery } = apiSlice;
