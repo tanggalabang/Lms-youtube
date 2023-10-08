@@ -237,13 +237,9 @@ export const updateAccessToken = CatchAsyncError(
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
-      await redis.set(user._id, JSON.stringify(user), "EX", 604800)
+      await redis.set(user._id, JSON.stringify(user), "EX", 604800);
 
-
-      res.status(200).json({
-        status: "Success",
-        accessToken,
-      });
+      next();
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
@@ -294,7 +290,7 @@ interface IUptadeUserInfo {
 export const updateUserInfo = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {  name } = req.body as IUptadeUserInfo;
+      const { name } = req.body as IUptadeUserInfo;
       const userId = req.user?._id;
       const user = await userModel.findById(userId);
 

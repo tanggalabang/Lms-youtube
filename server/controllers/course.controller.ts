@@ -10,6 +10,7 @@ import ejs from "ejs";
 import path from "path";
 import sendEmail from "../utils/sendMail";
 import NotificationModel from "../models/notificationModel";
+import axios from "axios";
 
 //create
 export const uploadCourse = CatchAsyncError(
@@ -81,13 +82,13 @@ export const getSingleCourse = CatchAsyncError(
         const course = JSON.parse(isCacheExist);
         res.status(200).json({
           success: true,
-          course,/*  */
+          course /*  */,
         });
       } else {
         const course = await CourseModel.findById(req.params.id).select(
           "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
         );
-        await redis.set(courseId, JSON.stringify(course), "EX", 604800);//7 days //save chase on redis
+        await redis.set(courseId, JSON.stringify(course), "EX", 604800); //7 days //save chase on redis
 
         res.status(200).json({
           success: true,
@@ -407,7 +408,7 @@ export const addReplyToReview = CatchAsyncError(
 );
 
 //get all courses --- only for admin
-export const getAllCourses= CatchAsyncError(
+export const getAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       getAllCoursesService(res);
@@ -418,12 +419,12 @@ export const getAllCourses= CatchAsyncError(
 );
 
 // delete course--- only for admin
-export const deleteCourse= CatchAsyncError(
+export const deleteCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
 
-      const course= await CourseModel.findById(id);
+      const course = await CourseModel.findById(id);
 
       if (!course) {
         return next(new ErrorHandler("Course not found", 404));
@@ -437,6 +438,29 @@ export const deleteCourse= CatchAsyncError(
         success: true,
         message: "Course deleted successfully",
       });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// generate video url
+export const generateVideoUrl = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { videoId } = req.body;
+      const response = await axios.post(
+        `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+        { ttl: 300 },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
+          },
+        }
+      );
+      res.json(response.data);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
