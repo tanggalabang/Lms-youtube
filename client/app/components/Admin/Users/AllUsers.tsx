@@ -16,7 +16,6 @@ type Props = {
 const AllCourses: FC<Props> = ({ isTeam }) => {
   const { theme, setTheme } = useTheme();
   const [active, setActive] = useState(false);
-
   const { isLoading, data, error } = useGetAllUsersQuery({});
 
   const columns = [
@@ -50,7 +49,7 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
       renderCell: (params: any) => {
         return (
           <>
-            <a href={`mailto:${params.row.eamil}`}>
+            <a href={`mailto:${params.row.email}`}>
               <AiOutlineMail className="dark:text-white text-black" size={20} />
             </a>
           </>

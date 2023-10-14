@@ -8,12 +8,12 @@ import {
   deleteCourse,
   editCourse,
   generateVideoUrl,
-  getAllCourse,
   getAllCourses,
+  getAdminAllCourses,
   getCourseByUser,
   getSingleCourse,
   uploadCourse,
-} from "../controllers/course.controller";
+} from "../controllers/course.controller"
 import { updateAccessToken } from "../controllers/user.controller";
 const courseRouter = express.Router();
 
@@ -32,7 +32,8 @@ courseRouter.put(
   editCourse
 );
 courseRouter.get("/get-course/:id", getSingleCourse);
-courseRouter.get("/get-courses", getAllCourse);
+courseRouter.get("/get-courses", getAllCourses);
+courseRouter.get("/get-admin-courses",isAutheticated,authorizeRoles("admin"), getAdminAllCourses);
 courseRouter.get(
   "/get-course-content/:id",
   updateAccessToken,

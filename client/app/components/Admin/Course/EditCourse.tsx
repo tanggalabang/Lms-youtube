@@ -1,25 +1,34 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import CourseOptions from "./CourseOptions";
 import CourseInformation from "./CourseInformation";
 import CourseData from "./CourseData";
 import CourseContent from "./CourseContent";
 import CoursePreview from "./CoursePreview";
-import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
+import {
+  useEditCourseMutation,
+  useGetAllCoursesQuery,
+} from "@/redux/features/courses/coursesApi";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
 
-type Props = {};
+type Props = { id: string };
 
-const CreateCourse = (props: Props) => {
-  // ambil function untuk kirim ke api
-  const [createCourse, { isLoading, isSuccess, error }] =
-    useCreateCourseMutation();
+const EditCourse: FC<Props> = ({ id }) => {
+  //mendekalrasikan api editcourse
+  const [editCourse, { isSuccess, error }] = useEditCourseMutation();
+  //ambil data dari api
+  const { data, refetch } = useGetAllCoursesQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  // cari data dari api (disesuaikan dengan id dari params)
+  const editCourseData = data && data.courses.find((i: any) => i._id === id); // coneole.log(editCourseData);
 
-  // useEffect
+  //useEffect
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Course created successfully");
+      toast.success("Course updated successfully");
       redirect("/admin/courses");
     }
     if (error) {
@@ -28,11 +37,28 @@ const CreateCourse = (props: Props) => {
         toast.error(errorMessage.data.message);
       }
     }
-  }, [isLoading, isSuccess, error]);
-  // /useEffect
+  }, [isSuccess, error]);
 
-  // state
   const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (editCourseData) {
+      setCourseInfo({
+        name: editCourseData.name,
+        description: editCourseData.description,
+        price: editCourseData.price,
+        estimatedPrice: editCourseData?.estimatedPrice,
+        tags: editCourseData.tags,
+        level: editCourseData.level,
+        demoUrl: editCourseData.demoUrl,
+        thumbnail: editCourseData?.thumbnail?.url,
+      });
+      setBenefits(editCourseData.benefits);
+      setPrerequisites(editCourseData.prerequisites);
+      setCourseContentData(editCourseData.courseData);
+    }
+  }, [editCourseData]);
+
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
@@ -43,8 +69,11 @@ const CreateCourse = (props: Props) => {
     demoUrl: "",
     thumbnail: "",
   });
+
   const [benefits, setBenefits] = useState([{ title: "" }]);
+
   const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
+
   const [courseContentData, setCourseContentData] = useState([
     {
       videoUrl: "",
@@ -60,10 +89,9 @@ const CreateCourse = (props: Props) => {
       suggestion: "",
     },
   ]);
-  const [courseData, setCourseData] = useState({});
-  // /state
 
-  // Penggabungan data menjadi satu ojeck
+  const [courseData, setCourseData] = useState({});
+
   const handleSubmit = async () => {
     // Format benefits array
     const formattedBenefits = benefits.map((benefit) => ({
@@ -104,19 +132,11 @@ const CreateCourse = (props: Props) => {
     };
     setCourseData(data);
   };
-  // /Penggabungan data menjadi satu ojeck
 
-  console.log(courseData);
-
-  //handlecourse
   const handleCourseCreate = async (e: any) => {
     const data = courseData;
-    console.log(data);
-    if (!isLoading) {
-      await createCourse(data);
-    }
+    await editCourse({ id: editCourseData?._id, data });
   };
-  // /handlecourse
 
   return (
     <div className="w-full flex min-h-screen">
@@ -152,9 +172,9 @@ const CreateCourse = (props: Props) => {
           <CoursePreview
             active={active}
             setActive={setActive}
-            isEdit={false}
             courseData={courseData}
             handleCourseCreate={handleCourseCreate}
+            isEdit={true}
           />
         )}
       </div>
@@ -165,4 +185,4 @@ const CreateCourse = (props: Props) => {
   );
 };
 
-export default CreateCourse;
+export default EditCourse;

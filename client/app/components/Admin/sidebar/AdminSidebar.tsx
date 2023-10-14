@@ -117,7 +117,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Link href="/">
-                  <h3 className="text-[25px] font-Poppins uppercase dark:text-white text-black">
+                  <h3 className="text-[23px] font-Poppins uppercase dark:text-white text-black">
                     ELearning
                   </h3>
                 </Link>
@@ -136,20 +136,22 @@ const Sidebar = () => {
               <Box display="flex" justifyContent="center" alignItems="center">
                 <Image
                   alt="profile-user"
-                  width={100}
-                  height={100}
-                  src={user.avatar ? user.avatar.url : avatarDefault}
                   style={{
                     cursor: "pointer",
                     borderRadius: "50%",
                     border: "3px solid #5b6fe6",
+                    width: "100px",
+                    height: "100px",
                   }}
+                  width={100}
+                  height={100}
+                  src={user.avatar ? user.avatar.url : avatarDefault}
                 />
               </Box>
 
               <Box textAlign="center">
                 <Typography
-                  variant="h4"
+                  variant="h6"
                   className="text-[20px] text-black dark:text-[#ffffffc1]"
                   sx={{ m: "10px 0 0 0" }}
                 >
@@ -231,15 +233,8 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Hero"
-              to="/admin/hero"
-              icon={<WebIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
               title="FAQ"
-              to="/faq"
+              to="/admin/faq"
               icon={<QuizIcon />}
               selected={selected}
               setSelected={setSelected}

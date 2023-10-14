@@ -10,24 +10,30 @@ export const createLayout = CatchAsyncError(
     try {
       const { type } = req.body;
       const isTypeExist = await LayoutModel.findOne({ type });
+
       if (isTypeExist) {
         return next(new ErrorHandler(`${type} already exis`, 400));
       }
+
       if (type === "Banner") {
         const { image, title, subTitle } = req.body;
         const myCloud = await cloudinary.v2.uploader.upload(image, {
           folder: "layout",
         });
         const banner = {
-          image: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
+          type: "Banner",
+          banner: {
+            image: {
+              public_id: myCloud.public_id,
+              url: myCloud.secure_url,
+            },
+            title,
+            subTitle,
           },
-          title,
-          subTitle,
         };
         await LayoutModel.create(banner);
       }
+
       if (type === "FAQ") {
         const { faq } = req.body;
         const faqItems = await Promise.all(
@@ -133,8 +139,8 @@ export const editLayout = CatchAsyncError(
 export const getLayoutByType = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {type} = req.body
-      const layout = await LayoutModel.findOne({type});
+      const { type } = req.params;
+      const layout = await LayoutModel.findOne({ type });
       res.status(200).json({
         success: true,
         layout,

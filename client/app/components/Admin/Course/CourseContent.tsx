@@ -123,6 +123,8 @@ const CourseContent: FC<Props> = ({
   };
   // </FUNCTIONS>
 
+  console.log(courseContentData);
+
   return (
     <div className="w-[80%] m-auto mt-24 p-3">
       <form onSubmit={handleSubmit}>
@@ -269,7 +271,6 @@ const CourseContent: FC<Props> = ({
                     {/* link */}
                     {item?.links.map((link: any, linkIndex: number) => (
                       <div className="mb-3 block">
-                        {/* judul dan ikon hapus */}
                         <div className="w-full flex items-center justify-between">
                           <label className={styles.label}>
                             Link {linkIndex + 1}
@@ -287,7 +288,6 @@ const CourseContent: FC<Props> = ({
                             }
                           />
                         </div>
-                        {/* link title */}
                         <input
                           type="text"
                           placeholder="Source Code... (Link title)"
@@ -300,7 +300,6 @@ const CourseContent: FC<Props> = ({
                             setCourseContentData(updatedData);
                           }}
                         />
-                        {/* link url */}
                         <input
                           type="url"
                           placeholder="Source Code Url... (Link URL)"
@@ -315,7 +314,6 @@ const CourseContent: FC<Props> = ({
                         />
                       </div>
                     ))}
-
                     <br />
                     {/* add link button */}
                     <div className="inline-block mb-4">

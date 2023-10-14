@@ -1,3 +1,5 @@
+//fungsi kode ini adalah menyimpan data pada state untuk auth
+// karena auth tidak menyimpan data pada database
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 

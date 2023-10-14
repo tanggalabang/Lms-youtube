@@ -73,8 +73,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
     }
   };
 
-  console.log(user);
-  console.log(data);
+  // console.log(user);
+  // console.log(data);
   //========================
 
   return (
